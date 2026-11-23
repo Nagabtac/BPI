@@ -1,0 +1,10 @@
+toekns.
+authentication
+
+# Terminal 1 — backend
+cd bpi-app\backend
+java -jar target\backend-0.0.1-SNAPSHOT.jar
+
+# Terminal 2 — frontend
+cd bpi-app\frontend
+npm run dev

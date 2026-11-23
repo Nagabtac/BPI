@@ -1,13 +1,14 @@
 import { useState } from 'react'
 
-export default function LoginPage({ onBack, onLogin }) {
+export default function LoginPage({ onBack, onLogin, onRegister }) {
   const [showPw, setShowPw] = useState(false)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [btnHover, setBtnHover] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
 
@@ -16,11 +17,28 @@ export default function LoginPage({ onBack, onLogin }) {
       return
     }
 
-    // Demo credentials: username="demo", password="demo123"
-    if (username === 'demo' && password === 'demo123') {
-      onLogin()
-    } else {
-      setError('Invalid username or password.')
+    setLoading(true)
+    try {
+      const res = await fetch('http://localhost:8080/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        onLogin()
+      } else {
+        setError(data.error || 'Invalid username or password.')
+      }
+    } catch {
+      // Backend not reachable — fall back to demo credentials
+      if (username === 'demo' && password === 'demo123') {
+        onLogin()
+      } else {
+        setError('Cannot reach server. Use demo / demo123 to test offline.')
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -112,8 +130,9 @@ export default function LoginPage({ onBack, onLogin }) {
               }}
               onMouseEnter={() => setBtnHover(true)}
               onMouseLeave={() => setBtnHover(false)}
+              disabled={loading}
             >
-              Log in
+              {loading ? 'Logging in…' : 'Log in'}
             </button>
           </div>
         </form>
@@ -130,7 +149,7 @@ export default function LoginPage({ onBack, onLogin }) {
           <span style={S.orLine} />
         </div>
 
-        <button style={S.secondaryBtn}>
+        <button style={S.secondaryBtn} onClick={onRegister}>
           <span>Register now</span>
         </button>
 

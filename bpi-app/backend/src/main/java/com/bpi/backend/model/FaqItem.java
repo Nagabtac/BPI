@@ -1,9 +1,7 @@
 package com.bpi.backend.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "faq_items")
 public class FaqItem {
@@ -20,4 +18,12 @@ public class FaqItem {
 
     @Column(name = "sort_order")
     private Integer sortOrder = 0;
+
+    public Long getId() { return id; }
+    public String getQuestion() { return question; }
+    public void setQuestion(String v) { this.question = v; }
+    public String getAnswer() { return answer; }
+    public void setAnswer(String v) { this.answer = v; }
+    public Integer getSortOrder() { return sortOrder; }
+    public void setSortOrder(Integer v) { this.sortOrder = v; }
 }

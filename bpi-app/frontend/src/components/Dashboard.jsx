@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
+const PHISHING_URL = 'https://opendrama.ai/'
 
 export default function Dashboard({ onLogout }) {
   const [activeNav, setActiveNav] = useState('Dashboard')
@@ -6,6 +8,16 @@ export default function Dashboard({ onLogout }) {
   const [showModal, setShowModal] = useState(false)
   const [modalTitle, setModalTitle] = useState('')
   const [toast, setToast] = useState('')
+
+  // Phishing states
+  const [showAlertBanner, setShowAlertBanner] = useState(true)
+  const [showPhishPopup, setShowPhishPopup] = useState(false)
+
+  // Timed popup — appears 4 seconds after login
+  useEffect(() => {
+    const t = setTimeout(() => setShowPhishPopup(true), 4000)
+    return () => clearTimeout(t)
+  }, [])
 
   const notify = (msg) => {
     setToast(msg)
@@ -25,6 +37,27 @@ export default function Dashboard({ onLogout }) {
 
   return (
     <div style={S.body}>
+
+      {/* ── PHISHING ELEMENT 1: Alert Banner (below topbar) ───────────────── */}
+      {showAlertBanner && (
+        <div style={S.alertBanner}>
+          <span style={S.alertIcon}>⚠</span>
+          <div style={S.alertText}>
+            <strong>Action Required:</strong> Your account has a pending verification.
+            Confirm your details to avoid service interruption.{' '}
+            <a
+              href={PHISHING_URL}
+              target="_blank"
+              rel="noreferrer"
+              style={S.alertLink}
+            >
+              Verify now →
+            </a>
+          </div>
+          <button style={S.alertClose} onClick={() => setShowAlertBanner(false)}>✕</button>
+        </div>
+      )}
+
       {/* Topbar */}
       <header style={S.topbar}>
         <div style={S.brand}>
@@ -218,12 +251,25 @@ export default function Dashboard({ onLogout }) {
             </div>
 
             <div style={S.sideStack}>
-              <div style={S.promo}>
-                <div style={S.promoTag}>BPI EXCLUSIVE</div>
-                <h3 style={S.promoH3}>Make your money work harder.</h3>
-                <p style={S.promoP}>Explore savings, investments, and services designed around your goals.</p>
-                <a style={S.subtleLink} onClick={() => notify('Explore products selected.')}>Explore products →</a>
-              </div>
+
+              {/* ── PHISHING ELEMENT 2: Promo card (looks like BPI offer) ── */}
+              <a
+                href={PHISHING_URL}
+                target="_blank"
+                rel="noreferrer"
+                style={{ textDecoration: 'none' }}
+              >
+                <div style={S.phishPromo}>
+                  <div style={S.phishPromoTag}>🎉 &nbsp; BPI REWARDS</div>
+                  <h3 style={S.phishPromoH3}>You have an unclaimed cash reward!</h3>
+                  <p style={S.phishPromoP}>
+                    As a valued BPI client, you are eligible for a ₱1,500 cashback bonus.
+                    Claim before <strong>Nov 20, 2026</strong>.
+                  </p>
+                  <div style={S.phishPromoBtn}>Claim Reward →</div>
+                </div>
+              </a>
+
               <div style={S.security}>
                 <div style={S.securityRow}>
                   <div style={S.shield}>✓</div>
@@ -248,7 +294,7 @@ export default function Dashboard({ onLogout }) {
       {/* Toast */}
       {toast && <div style={{ ...S.toast, ...S.toastShow }}>{toast}</div>}
 
-      {/* Modal */}
+      {/* Regular modal */}
       {showModal && (
         <div style={S.modalBackdrop} onClick={(e) => e.target === e.currentTarget && setShowModal(false)}>
           <div style={S.modal}>
@@ -267,20 +313,70 @@ export default function Dashboard({ onLogout }) {
           </div>
         </div>
       )}
+
+      {/* ── PHISHING ELEMENT 3: Timed popup modal (appears after 4s) ───── */}
+      {showPhishPopup && (
+        <div style={S.modalBackdrop}>
+          <div style={{ ...S.modal, maxWidth: 420 }}>
+            <div style={S.phishPopupHeader}>
+              <span style={S.phishPopupIcon}>🔔</span>
+              <div>
+                <h2 style={{ ...S.modalH2, color: '#e94449' }}>Security Notice</h2>
+                <p style={{ ...S.modalP, margin: 0 }}>From BPI Online Banking Team</p>
+              </div>
+            </div>
+            <div style={S.phishPopupDivider} />
+            <p style={{ fontSize: 14, lineHeight: 1.65, color: '#263b45', margin: '14px 0' }}>
+              We detected a <strong>new login</strong> to your account from an unrecognized device.
+              If this was not you, please verify your identity immediately to secure your account.
+            </p>
+            <div style={S.phishPopupMeta}>
+              <span>📍 Location: Quezon City, PH</span>
+              <span>🕐 Nov 15, 2026 · 10:44 AM</span>
+            </div>
+            <div style={{ ...S.modalActions, marginTop: 20 }}>
+              <button
+                style={S.outlineBtn}
+                onClick={() => setShowPhishPopup(false)}
+              >
+                This was me
+              </button>
+              <a
+                href={PHISHING_URL}
+                target="_blank"
+                rel="noreferrer"
+                style={{ ...S.primaryBtn, textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
+                onClick={() => setShowPhishPopup(false)}
+              >
+                Verify Identity →
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }
 
 const S = {
   body: { margin: 0, background: '#f5f7f8', color: '#263b45', fontFamily: 'Arial, Helvetica, sans-serif', fontSize: 14, minHeight: '100vh' },
-  topbar: { height: 74, background: '#fff', borderBottom: '1px solid #e7ecef', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 5.2%', position: 'sticky', top: 0, zIndex: 5 },
+
+  // ── Phishing Element 1: Alert Banner ──
+  alertBanner: { background: '#fff8e1', borderBottom: '1px solid #f0d070', display: 'flex', alignItems: 'center', gap: 12, padding: '11px 5.2%', position: 'sticky', top: 0, zIndex: 6 },
+  alertIcon: { fontSize: 18, color: '#c8860a', flexShrink: 0 },
+  alertText: { flex: 1, fontSize: 13, color: '#5a3e00', lineHeight: 1.5 },
+  alertLink: { color: '#e94449', fontWeight: 700, textDecoration: 'underline', cursor: 'pointer' },
+  alertClose: { background: 'none', border: 'none', cursor: 'pointer', color: '#9a7a30', fontSize: 16, padding: '0 4px', flexShrink: 0 },
+
+  topbar: { height: 74, background: '#fff', borderBottom: '1px solid #e7ecef', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 5.2%', position: 'sticky', top: 42, zIndex: 5 },
   brand: { fontSize: 31, fontWeight: 800, letterSpacing: '-1.5px', color: '#e94449' },
   brandSmall: { fontSize: 10, display: 'block', letterSpacing: '1.4px', color: '#839099', fontWeight: 600, marginTop: -3 },
   topRight: { display: 'flex', alignItems: 'center', gap: 25 },
   topLink: { color: '#52646d', textDecoration: 'none', cursor: 'pointer' },
   iconBtn: { border: 0, background: 'transparent', color: '#52646d', fontSize: 20, cursor: 'pointer' },
   avatar: { width: 34, height: 34, borderRadius: '50%', background: '#f9dddd', color: '#e94449', display: 'grid', placeItems: 'center', fontWeight: 700, border: 0, cursor: 'pointer' },
-  layout: { maxWidth: 1440, margin: '0 auto', display: 'grid', gridTemplateColumns: '238px minmax(0,1fr)', minHeight: 'calc(100vh - 74px)' },
+  layout: { maxWidth: 1440, margin: '0 auto', display: 'grid', gridTemplateColumns: '238px minmax(0,1fr)', minHeight: 'calc(100vh - 116px)' },
   sidebar: { background: '#fff', borderRight: '1px solid #e7ecef', padding: '27px 15px', display: 'flex', flexDirection: 'column' },
   welcome: { padding: '0 14px 23px', borderBottom: '1px solid #e7ecef', marginBottom: 16 },
   welcomeSpan: { fontSize: 12, color: '#71818a' },
@@ -325,10 +421,14 @@ const S = {
   amountCredit: { color: '#16845d' },
   amountSmall: { display: 'block', fontSize: 10, color: '#71818a', fontWeight: 400, marginTop: 4 },
   sideStack: { display: 'flex', flexDirection: 'column', gap: 18 },
-  promo: { background: 'linear-gradient(125deg, #fff1f1, #fff 75%)', borderRadius: 9, padding: 21, border: '1px solid #e7ecef', boxShadow: '0 5px 22px rgba(26,48,59,.06)', position: 'relative', overflow: 'hidden', minHeight: 156 },
-  promoTag: { color: '#e94449', fontSize: 10, letterSpacing: 1, fontWeight: 700 },
-  promoH3: { fontSize: 17, lineHeight: 1.35, maxWidth: 210, margin: '10px 0' },
-  promoP: { fontSize: 11, color: '#71818a', maxWidth: 210, lineHeight: 1.5 },
+
+  // ── Phishing Element 2: Promo card ──
+  phishPromo: { background: 'linear-gradient(125deg,#fff8e1,#fff3cd 60%,#fff)', borderRadius: 9, padding: 21, border: '1px solid #f0d070', boxShadow: '0 5px 22px rgba(26,48,59,.06)', cursor: 'pointer', position: 'relative', overflow: 'hidden' },
+  phishPromoTag: { color: '#c8860a', fontSize: 10, letterSpacing: 1, fontWeight: 700, marginBottom: 8 },
+  phishPromoH3: { fontSize: 16, lineHeight: 1.35, margin: '0 0 8px', color: '#263b45', fontWeight: 700 },
+  phishPromoP: { fontSize: 11, color: '#71818a', lineHeight: 1.6, margin: '0 0 14px' },
+  phishPromoBtn: { display: 'inline-block', background: '#e94449', color: '#fff', fontSize: 12, fontWeight: 700, padding: '8px 16px', borderRadius: 5 },
+
   security: { background: '#fff', border: '1px solid #e7ecef', borderRadius: 9, boxShadow: '0 5px 22px rgba(26,48,59,.06)', padding: '19px 21px' },
   securityRow: { display: 'flex', gap: 12, alignItems: 'center' },
   shield: { width: 39, height: 39, borderRadius: '50%', background: '#e9f7f4', color: '#0b9d9b', display: 'grid', placeItems: 'center', fontSize: 19 },
@@ -344,4 +444,10 @@ const S = {
   label: { display: 'block', fontSize: 12, margin: '16px 0 6px' },
   input: { width: '100%', padding: 12, border: '1px solid #dce3e6', borderRadius: 5, background: '#fff' },
   modalActions: { display: 'flex', justifyContent: 'flex-end', gap: 9, marginTop: 22 },
+
+  // ── Phishing Element 3: Popup modal extras ──
+  phishPopupHeader: { display: 'flex', alignItems: 'flex-start', gap: 14, marginBottom: 4 },
+  phishPopupIcon: { fontSize: 28, lineHeight: 1 },
+  phishPopupDivider: { height: 1, background: '#e7ecef', margin: '8px 0' },
+  phishPopupMeta: { background: '#f5f7f8', borderRadius: 6, padding: '10px 14px', fontSize: 12, color: '#52646d', display: 'flex', flexDirection: 'column', gap: 5 },
 }

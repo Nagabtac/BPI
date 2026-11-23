@@ -1,6 +1,14 @@
+C:\Users\CATBAGAN\Documents\Maam MZANNA\BPI\bpi-app\backend\src\main\java\com\bpi\backend\config\SecurityConfig.java
 C:\Users\CATBAGAN\Documents\Maam MZANNA\BPI\bpi-app\backend\src\main\java\com\bpi\backend\BpiApplication.java
+C:\Users\CATBAGAN\Documents\Maam MZANNA\BPI\bpi-app\backend\src\main\java\com\bpi\backend\repository\UserRepository.java
+C:\Users\CATBAGAN\Documents\Maam MZANNA\BPI\bpi-app\backend\src\main\java\com\bpi\backend\model\User.java
+C:\Users\CATBAGAN\Documents\Maam MZANNA\BPI\bpi-app\backend\src\main\java\com\bpi\backend\config\CorsConfig.java
+C:\Users\CATBAGAN\Documents\Maam MZANNA\BPI\bpi-app\backend\src\main\java\com\bpi\backend\model\FaqItem.java
+C:\Users\CATBAGAN\Documents\Maam MZANNA\BPI\bpi-app\backend\src\main\java\com\bpi\backend\repository\AccountRepository.java
 C:\Users\CATBAGAN\Documents\Maam MZANNA\BPI\bpi-app\backend\src\main\java\com\bpi\backend\repository\FaqItemRepository.java
 C:\Users\CATBAGAN\Documents\Maam MZANNA\BPI\bpi-app\backend\src\main\java\com\bpi\backend\service\FaqService.java
 C:\Users\CATBAGAN\Documents\Maam MZANNA\BPI\bpi-app\backend\src\main\java\com\bpi\backend\controller\FaqController.java
-C:\Users\CATBAGAN\Documents\Maam MZANNA\BPI\bpi-app\backend\src\main\java\com\bpi\backend\config\CorsConfig.java
-C:\Users\CATBAGAN\Documents\Maam MZANNA\BPI\bpi-app\backend\src\main\java\com\bpi\backend\model\FaqItem.java
+C:\Users\CATBAGAN\Documents\Maam MZANNA\BPI\bpi-app\backend\src\main\java\com\bpi\backend\model\Account.java
+C:\Users\CATBAGAN\Documents\Maam MZANNA\BPI\bpi-app\backend\src\main\java\com\bpi\backend\controller\DevController.java
+C:\Users\CATBAGAN\Documents\Maam MZANNA\BPI\bpi-app\backend\src\main\java\com\bpi\backend\controller\AuthController.java
+C:\Users\CATBAGAN\Documents\Maam MZANNA\BPI\bpi-app\backend\src\main\java\com\bpi\backend\service\AuthService.java

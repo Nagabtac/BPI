@@ -1,0 +1,14 @@
+com\bpi\backend\repository\FaqItemRepository.class
+com\bpi\backend\repository\UserRepository.class
+com\bpi\backend\service\FaqService.class
+com\bpi\backend\model\User.class
+com\bpi\backend\BpiApplication.class
+com\bpi\backend\controller\DevController.class
+com\bpi\backend\controller\FaqController.class
+com\bpi\backend\repository\AccountRepository.class
+com\bpi\backend\service\AuthService.class
+com\bpi\backend\model\Account.class
+com\bpi\backend\controller\AuthController.class
+com\bpi\backend\config\SecurityConfig.class
+com\bpi\backend\config\CorsConfig.class
+com\bpi\backend\model\FaqItem.class
