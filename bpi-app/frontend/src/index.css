@@ -52,7 +52,7 @@ main { padding-top: 77px; }
 
 .navbar .wrap {
   display: flex; align-items: center; width: 100%;
-  padding: 0 145px;
+  padding: 0 32px;
   max-width: unset;
   margin: 0;
 }
@@ -62,44 +62,43 @@ main { padding-top: 77px; }
   display: flex; align-items: center;
   flex-shrink: 0;
   width: 100px; height: 42px;
-  margin-right: 49px;
+  margin-right: 32px;
 }
 .nav-brand img { height: 42px; display: block; }
 
-/* Nav links */
+/* Nav links — centered between logo and right cluster */
 .nav-links {
   display: flex; align-items: center;
-  flex: 1; justify-content: flex-start;
+  flex: 1; justify-content: center;
   gap: 0;
 }
 .nav-item {
   display: inline-flex; align-items: center;
-  font-size: 16px; font-weight: 500;
+  font-size: 21px; font-weight: 500;
   line-height: 20px;
-  padding: 0; margin-right: 38px;
-  white-space: nowrap; cursor: pointer; gap: 10px;
+  padding: 0; margin-right: 32px;
+  white-space: nowrap; cursor: pointer; gap: 6px;
 }
-/* last nav item gets extra push before search */
 .nav-item:last-child { margin-right: 0; }
 
 /* Right cluster */
 .nav-right {
   display: flex; align-items: center;
-  margin-left: 60px; flex-shrink: 0;
-  gap: 26px;
+  margin-left: 0; flex-shrink: 0;
+  gap: 20px;
 }
 .nav-search-btn {
   background: none; border: none; padding: 0;
   display: flex; align-items: center; cursor: pointer; line-height: 0;
 }
-/* LOGIN: 76×36px, 13px bold */
+/* LOGIN: auto width, 36px tall, 13px bold */
 .nav-login {
-  width: 76px; height: 36px;
+  width: auto; height: 36px;
   display: flex; align-items: center; justify-content: center;
   border-radius: 4px;
   font-weight: 700; font-size: 13px; letter-spacing: 1px;
   cursor: pointer; white-space: nowrap;
-  padding: 0;
+  padding: 0 14px;
 }
 
 /* ════════════════════════════════════════════════════════════════

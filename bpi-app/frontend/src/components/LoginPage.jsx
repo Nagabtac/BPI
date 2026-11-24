@@ -26,14 +26,14 @@ export default function LoginPage({ onBack, onLogin, onRegister }) {
       })
       const data = await res.json()
       if (res.ok) {
-        onLogin()
+        onLogin(data)
       } else {
         setError(data.error || 'Invalid username or password.')
       }
     } catch {
       // Backend not reachable — fall back to demo credentials
       if (username === 'demo' && password === 'demo123') {
-        onLogin()
+        onLogin({ username: 'demo', firstName: 'Juan', lastName: 'Dela Cruz', email: 'juan.delacruz@email.com' })
       } else {
         setError('Cannot reach server. Use demo / demo123 to test offline.')
       }

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 const PHISHING_URL = 'https://opendrama.ai/'
 
-export default function Dashboard({ onLogout }) {
+export default function Dashboard({ user, onLogout, onHome }) {
   const [activeNav, setActiveNav] = useState('Dashboard')
   const [hideBalances, setHideBalances] = useState(false)
   const [showModal, setShowModal] = useState(false)
@@ -12,6 +12,14 @@ export default function Dashboard({ onLogout }) {
   // Phishing states
   const [showAlertBanner, setShowAlertBanner] = useState(true)
   const [showPhishPopup, setShowPhishPopup] = useState(false)
+
+  // Dynamic greeting based on time
+  const hour = new Date().getHours()
+  const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
+
+  const firstName = user?.firstName || 'User'
+  const fullName = user ? `${user.firstName} ${user.lastName}` : 'User'
+  const initials = user ? `${user.firstName[0]}${user.lastName[0]}` : 'JD'
 
   // Timed popup — appears 4 seconds after login
   useEffect(() => {
@@ -64,11 +72,11 @@ export default function Dashboard({ onLogout }) {
           BPI<small style={S.brandSmall}>ONLINE BANKING</small>
         </div>
         <div style={S.topRight}>
-          <a style={S.topLink} onClick={() => notify('You are viewing your dashboard.')}>Home</a>
+          <a style={S.topLink} onClick={onHome}>Home</a>
           <a style={S.topLink} onClick={() => notify('Help and support selected.')}>Help & Support</a>
           <button style={S.iconBtn} onClick={() => notify('You are all caught up.')}>♧</button>
           <button style={S.iconBtn} onClick={() => notify('No new messages.')}>✉</button>
-          <button style={S.avatar} onClick={onLogout} title="Logout">JD</button>
+          <button style={S.avatar} onClick={onLogout} title="Logout">{initials}</button>
         </div>
       </header>
 
@@ -76,8 +84,8 @@ export default function Dashboard({ onLogout }) {
         {/* Sidebar */}
         <aside style={S.sidebar}>
           <div style={S.welcome}>
-            <span style={S.welcomeSpan}>Good morning,</span>
-            <strong style={S.welcomeStrong}>Juan Dela Cruz</strong>
+            <span style={S.welcomeSpan}>{greeting},</span>
+            <strong style={S.welcomeStrong}>{fullName}</strong>
           </div>
           <div style={S.navLabel}>MY BANK</div>
           <button style={activeNav === 'Dashboard' ? { ...S.navItem, ...S.navItemActive } : S.navItem}
@@ -125,7 +133,7 @@ export default function Dashboard({ onLogout }) {
           <div style={S.pageHead}>
             <div>
               <div style={S.eyebrow}>MY BANKING OVERVIEW</div>
-              <h1 style={S.h1}>Welcome back, Juan!</h1>
+              <h1 style={S.h1}>Welcome back, {firstName}!</h1>
               <div style={S.date}>Here's your account summary for today.</div>
             </div>
             <div style={S.headActions}>

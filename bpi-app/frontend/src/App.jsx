@@ -16,15 +16,33 @@ import RegisterPage from './components/RegisterPage'
 import Dashboard from './components/Dashboard'
 
 export default function App() {
-  const [view, setView] = useState('home') // 'home' | 'login' | 'register' | 'dashboard'
+  const [view, setView] = useState(() => {
+    return sessionStorage.getItem('bpi_user') ? 'dashboard' : 'home'
+  })
+  const [user, setUser] = useState(() => {
+    const saved = sessionStorage.getItem('bpi_user')
+    return saved ? JSON.parse(saved) : null
+  })
 
-  if (view === 'dashboard') return <Dashboard onLogout={() => setView('home')} />
-  if (view === 'login')     return <LoginPage onBack={() => setView('home')} onLogin={() => setView('dashboard')} onRegister={() => setView('register')} />
+  const handleLogin = (u) => {
+    sessionStorage.setItem('bpi_user', JSON.stringify(u))
+    setUser(u)
+    setView('dashboard')
+  }
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('bpi_user')
+    setUser(null)
+    setView('home')
+  }
+
+  if (view === 'dashboard') return <Dashboard user={user} onLogout={handleLogout} onHome={() => setView('home')} />
+  if (view === 'login')     return <LoginPage onBack={() => setView('home')} onLogin={handleLogin} onRegister={() => setView('register')} />
   if (view === 'register')  return <RegisterPage onBack={() => setView('login')} onSuccess={() => setView('login')} />
 
   return (
     <>
-      <Header onLoginClick={() => setView('login')} />
+      <Header onLoginClick={() => setView('login')} user={user} onDashboard={() => setView('dashboard')} />
       <HeroVideo />
       <main>
         <LeadingTheWay />

@@ -29,7 +29,7 @@ function SearchIcon({ color }) {
   )
 }
 
-export default function Header({ onLoginClick }) {
+export default function Header({ onLoginClick, user, onDashboard }) {
   const [atTop, setAtTop] = useState(true)
 
   useEffect(() => {
@@ -50,26 +50,23 @@ export default function Header({ onLoginClick }) {
     }}>
       <div className="wrap" style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
 
-        {/* ── BPI logo ── */}
-        <div className="nav-brand">
-          {atTop ? (
-            /* Over video: white SVG reverse logo */
-            <img
-              src="/images/BPI_RT__96x42_header_Reverse.svg"
-              alt="BPI"
-              style={{ height: 42, display: 'block' }}
-            />
-          ) : (
-            /* Scrolled: gold crest + red BPI text */
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ color: '#c9a51b', fontSize: 28, lineHeight: 1 }}>♛</span>
-              <span style={{ color: '#9b1b2a', fontSize: 26, fontWeight: 800, letterSpacing: '-1px', lineHeight: 1 }}>BPI</span>
-            </div>
-          )}
-        </div>
-
-        {/* ── Nav links — centred in the remaining space ── */}
+        {/* ── Nav links — logo + items all in one centered row ── */}
         <div className="nav-links">
+          <div className="nav-brand">
+            {atTop ? (
+              <img
+                src="/images/BPI_RT__96x42_header_Reverse.svg"
+                alt="BPI"
+                style={{ height: 42, display: 'block' }}
+              />
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ color: '#c9a51b', fontSize: 28, lineHeight: 1 }}>♛</span>
+                <span style={{ color: '#9b1b2a', fontSize: 26, fontWeight: 800, letterSpacing: '-1px', lineHeight: 1 }}>BPI</span>
+              </div>
+            )}
+          </div>
+
           {navItems.map(item => (
             <a key={item} className="nav-item" style={{ color: textColor }}>
               {item}
@@ -82,21 +79,31 @@ export default function Header({ onLoginClick }) {
           ))}
         </div>
 
-        {/* ── Right: search + LOGIN ── */}
+        {/* ── Right: search + LOGIN / user ── */}
         <div className="nav-right">
           <button className="nav-search-btn" aria-label="Search">
             <SearchIcon color={iconColor} />
           </button>
 
-          <button
-            className="nav-login"
-            onClick={onLoginClick}
-            style={atTop
-              ? { background: 'transparent', border: '1.5px solid #fff', color: '#fff' }
-              : { background: '#b71c2e',      border: '1.5px solid #b71c2e', color: '#fff' }}
-          >
-            LOGIN
-          </button>
+          {user ? (
+            <button
+              className="nav-login"
+              onClick={onDashboard}
+              style={atTop
+                ? { background: 'transparent', border: '1.5px solid #fff', color: '#fff' }
+                : { background: '#b71c2e', border: '1.5px solid #b71c2e', color: '#fff' }}
+            >
+              DASHBOARD
+            </button>
+          ) : (
+            <button
+              className="nav-login"
+              onClick={onLoginClick}
+              style={{ background: '#fff', border: '1.5px solid #fff', color: '#b71c2e' }}
+            >
+              LOGIN
+            </button>
+          )}
         </div>
 
       </div>
